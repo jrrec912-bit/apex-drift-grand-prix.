@@ -1,0 +1,32 @@
+
+name: Build Apex Drift Grand Prix APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**.py'
+      - 'buildozer.spec'
+      - '.github/workflows/build.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get game files
+        uses: actions/checkout@v4
+
+      - name: Build Android APK
+        uses: ArtemSBulgakov/buildozer-action@v1
+        with:
+          workdir: .
+          buildozer-cmd: android debug
+
+      - name: Save APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Apex-Drift-Grand-Prix-APK
+          path: bin/*.apk
+          if-no-files-found: error
+          
